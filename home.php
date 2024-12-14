@@ -1,65 +1,41 @@
-<?php 
-   session_start();
+<?php
+session_start();
+include('db.php');
 
-   include("php/config.php");
-   if(!isset($_SESSION['valid'])){
-    header("Location: index.php");
-   }
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$user_id = $_SESSION['user_id'];
+$username = $_SESSION['username'];
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/style.css">
     <title>Home</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="nav">
-        <div class="logo">
-            <p><a href="home.php">Logo</a> </p>
-        </div>
 
-        <div class="right-links">
-
-            <?php 
-            
-            $id = $_SESSION['id'];
-            $query = mysqli_query($con,"SELECT*FROM users WHERE Id=$id");
-
-            while($result = mysqli_fetch_assoc($query)){
-                $res_Uname = $result['Username'];
-                $res_Email = $result['Email'];
-                $res_Age = $result['Age'];
-                $res_id = $result['Id'];
-            }
-            
-            echo "<a href='edit.php?Id=$res_id'>Change Profile</a>";
-            ?>
-
-            <a href="php/logout.php"> <button class="btn">Log Out</button> </a>
-
+<header>
+    <div id="user-info">
+        <span>Welcome, <?php echo htmlspecialchars($username); ?></span>
+        <div id="dropdown">
+            <a href="chat.php">Go to Chat</a>
+            <a href="logout.php">Logout</a>
         </div>
     </div>
-    <main>
+</header>
 
-       <div class="main-box top">
-          <div class="top">
-            <div class="box">
-                <p>Hello <b><?php echo $res_Uname ?></b>, Welcome</p>
-            </div>
-            <div class="box">
-                <p>Your email is <b><?php echo $res_Email ?></b>.</p>
-            </div>
-          </div>
-          <div class="bottom">
-            <div class="box">
-                <p>And you are <b><?php echo $res_Age ?> years old</b>.</p> 
-            </div>
-          </div>
-       </div>
+<div class="container">
+    <h2>User Home Page</h2>
+    <p>Welcome to the chat application, <?php echo htmlspecialchars($username); ?>!</p>
+</div>
 
-    </main>
 </body>
 </html>
