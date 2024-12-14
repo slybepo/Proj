@@ -1,4 +1,4 @@
-CREATE TABLE uses(
+CREATE TABLE usesp(
     Id int PRIMARY KEY AUTO_INCREMENT,
     Username varchar(200),
     Email varchar(200),
