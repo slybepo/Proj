@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.sidebar {
+    width: 250px;
+    background: #333;
+    color: white;
+    position: fixed;
+    height: 100%;
+}
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar nav ul li {
+    padding: 15px;
+}
+.sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+.sidebar .settings {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+}
