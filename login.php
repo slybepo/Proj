@@ -1,19 +1,23 @@
 <?php
+session_start();
 include('db.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password = $_POST['password'];
 
-    $sql = "INSERT INTO users (username, password) VALUES (:username, :password)";
+    $sql = "SELECT * FROM users WHERE username = :username";
     $stmt = $pdo->prepare($sql);
-    
-    if ($stmt->execute(['username' => $username, 'password' => $password])) {
-        echo "Registration successful!";
-        header("Location: login.php");
+    $stmt->execute(['username' => $username]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+        header("Location: home.php");
         exit;
     } else {
-        echo "Error: Could not register the user.";
+        echo "Invalid credentials!";
     }
 }
 ?>
@@ -23,17 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Login</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-    <h2>Register</h2>
-    <form method="POST" action="register.php">
+    <h2>Login</h2>
+    <form method="POST" action="login.php">
         Username: <input type="text" name="username" required><br>
         Password: <input type="password" name="password" required><br>
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
     </form>
 </div>
 
